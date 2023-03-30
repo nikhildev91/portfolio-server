@@ -35,7 +35,7 @@ connectDB();
 
 app.use(express.json());
 app.use(bodyParser.json());
-app.get('/', (req, res) => {
+app.use('/', (req, res) => {
   res.send(`Server running on port ${PORT} in ${NODE_ENV} mode!..`);
 });
 app.post('/api/register', register);
