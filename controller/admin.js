@@ -27,7 +27,8 @@ module.exports = {
   }),
 
   addProject: asyncHandler(async (req, res) => {
-    const { projectName, image, gitLink, liveLink } = req.body;
+    const { projectName, image, gitLink, liveLink, description, status } =
+      req.body;
     const projects = await Project.find().exec();
     const data = await Project.insertMany([
       {
@@ -36,6 +37,8 @@ module.exports = {
         image,
         github: gitLink,
         live: liveLink,
+        description,
+        status,
       },
     ]);
     if (data) {
@@ -92,6 +95,46 @@ module.exports = {
       res.status(200).json(data);
     } else {
       res.status(400).json('Not found');
+    }
+  }),
+
+  getProjectDetails: asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const data = await Project.findById(id).exec();
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      res.status(400).json('not found');
+    }
+  }),
+
+  editProject: asyncHandler(async (req, res) => {
+    const {
+      id,
+      projectName,
+      gitLink,
+      liveLink,
+      url,
+      description,
+      projectstatus,
+    } = req.body;
+
+    const data = await Project.updateOne(
+      { _id: id },
+      {
+        name: projectName,
+        image: url,
+        github: gitLink,
+        live: liveLink,
+        description,
+        status: projectstatus,
+      }
+    );
+
+    if (data.acknowledged && data.modifiedCount === 1) {
+      res.status(200).json({ status: true, message: 'Success' });
+    } else {
+      res.status(400).json('Something went wrong!..');
     }
   }),
 };

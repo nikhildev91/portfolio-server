@@ -11,6 +11,8 @@ const {
   addSkills,
   deleteSkills,
   skillsList,
+  getProjectDetails,
+  editProject,
 } = require('./controller/admin');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -46,6 +48,8 @@ app.post('/api/delete-project', deleteProject);
 app.post('/api/add-skills', addSkills);
 app.post('/api/delete-skills', deleteSkills);
 app.get('/api/get-skills', skillsList);
+app.get('/api/get-project-details/:id', getProjectDetails);
+app.post('/api/edit-project', editProject);
 server.listen(
   PORT,
   console.log(`Server running on port ${PORT} in ${NODE_ENV} mode!..`)
